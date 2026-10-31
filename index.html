@@ -1,0 +1,1308 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-900">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StoryCraft - Modern Book & Chapter Publishing Platform</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              400: '#38bdf8',
+              500: '#0ea5e9',
+              600: '#0284c7',
+              700: '#0369a1',
+              900: '#0c4a6e',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Inter Font -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap">
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0f172a;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #475569;
+    }
+  </style>
+</head>
+<body class="h-full text-slate-100 flex flex-col bg-slate-900 selection:bg-brand-500 selection:text-white">
+
+  <!-- TOP NAVIGATION BAR -->
+  <header class="border-b border-slate-800 bg-slate-950/80 backdrop-blur-md sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <div class="flex items-center gap-3 cursor-pointer" onclick="navigateTo('library')">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-brand-500/20">
+          <i class="fa-solid fa-book-bookmark text-white text-lg"></i>
+        </div>
+        <div>
+          <span class="text-lg font-bold bg-gradient-to-r from-white via-slate-200 to-brand-400 bg-clip-text text-transparent">StoryCraft</span>
+          <span class="block text-[10px] text-slate-400 font-medium tracking-wider uppercase">Publishing Studio</span>
+        </div>
+      </div>
+
+      <!-- Navigation User Control State -->
+      <div id="nav-user-controls" class="flex items-center gap-3">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN APP CONTAINER -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- VIEW 1: LOGIN SECTION -->
+    <section id="view-login" class="max-w-md mx-auto my-8">
+      <div class="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-6 sm:p-8 shadow-2xl backdrop-blur-sm">
+        
+        <div class="text-center mb-6">
+          <div class="w-12 h-12 bg-brand-500/10 border border-brand-500/20 rounded-2xl flex items-center justify-center mx-auto mb-3 text-brand-400">
+            <i class="fa-solid fa-shield-halved text-xl"></i>
+          </div>
+          <h2 class="text-xl font-bold text-white">Sign In to StoryCraft</h2>
+          <p class="text-xs text-slate-400 mt-1">Select your access portal below to continue</p>
+        </div>
+
+        <!-- Login Type Tabs -->
+        <div class="flex p-1 bg-slate-900 rounded-xl mb-6 border border-slate-700/60">
+          <button id="tab-master-btn" onclick="switchLoginTab('master')" class="flex-1 py-2 text-xs font-semibold rounded-lg transition-all bg-brand-600 text-white shadow">
+            <i class="fa-solid fa-key mr-1.5"></i> Master Portal
+          </button>
+          <button id="tab-reader-btn" onclick="switchLoginTab('reader')" class="flex-1 py-2 text-xs font-semibold rounded-lg transition-all text-slate-400 hover:text-white">
+            <i class="fa-solid fa-user-check mr-1.5"></i> Reader Login
+          </button>
+        </div>
+
+        <!-- Master Password Form -->
+        <form id="form-master-login" onsubmit="handleMasterLogin(event)" class="space-y-4">
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1">Master Author Access Password</label>
+            <div class="relative">
+              <input type="password" id="input-master-pass" required placeholder="Enter master password..."
+                class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-brand-500 transition-all pl-10">
+              <i class="fa-solid fa-lock absolute left-3.5 top-3.5 text-slate-500 text-xs"></i>
+            </div>
+          </div>
+
+          <button type="submit" class="w-full bg-brand-600 hover:bg-brand-500 text-white font-semibold text-xs py-3 rounded-xl shadow-lg shadow-brand-600/30 transition-all flex items-center justify-center gap-2">
+            <span>Unlock Master Publishing Studio</span>
+            <i class="fa-solid fa-arrow-right text-xs"></i>
+          </button>
+        </form>
+
+        <!-- Reader Login Form -->
+        <form id="form-reader-login" onsubmit="handleReaderLogin(event)" class="space-y-4 hidden">
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1">Reader Username</label>
+            <div class="relative">
+              <input type="text" id="input-reader-user" placeholder="e.g. Reader1"
+                class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-brand-500 transition-all pl-10">
+              <i class="fa-solid fa-user absolute left-3.5 top-3.5 text-slate-500 text-xs"></i>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1">Password</label>
+            <div class="relative">
+              <input type="password" id="input-reader-pass" placeholder="e.g. 001"
+                class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-brand-500 transition-all pl-10">
+              <i class="fa-solid fa-key absolute left-3.5 top-3.5 text-slate-500 text-xs"></i>
+            </div>
+          </div>
+
+          <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs py-3 rounded-xl shadow-lg shadow-indigo-600/30 transition-all flex items-center justify-center gap-2">
+            <span>Access Reader Library</span>
+            <i class="fa-solid fa-book-open text-xs"></i>
+          </button>
+        </form>
+
+      </div>
+    </section>
+
+
+    <!-- VIEW 2: LIBRARY DASHBOARD -->
+    <section id="view-library" class="space-y-6 hidden">
+      
+      <!-- Dashboard Top Banner -->
+      <div class="bg-gradient-to-r from-slate-800 via-slate-800/90 to-slate-900 border border-slate-700/80 rounded-2xl p-6 shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div>
+          <div class="flex items-center gap-2 mb-1">
+            <span id="badge-role" class="text-xs px-2.5 py-0.5 rounded-full font-medium bg-brand-500/10 text-brand-400 border border-brand-500/20">Author Mode</span>
+            <span id="stats-summary" class="text-xs text-slate-400"></span>
+          </div>
+          <h1 class="text-2xl font-extrabold text-white">Story Library & Catalog</h1>
+          <p class="text-xs text-slate-400 mt-1">Browse published works or select a book to manage its chapters.</p>
+        </div>
+
+        <div id="library-actions" class="flex flex-wrap items-center gap-3 w-full md:w-auto">
+          <!-- Dynamic Action Buttons -->
+        </div>
+      </div>
+
+      <!-- Search & Filter Header -->
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-4 bg-slate-800/40 p-3 rounded-2xl border border-slate-800">
+        <div class="relative w-full sm:w-80">
+          <input type="text" id="input-search-books" oninput="renderLibrary()" placeholder="Search title, author, or genre..." 
+            class="w-full bg-slate-900 border border-slate-700/80 rounded-xl px-3.5 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-brand-500 pl-9">
+          <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-slate-500 text-xs"></i>
+        </div>
+      </div>
+
+      <!-- Books Grid -->
+      <div id="books-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Rendered dynamically -->
+      </div>
+    </section>
+
+
+    <!-- VIEW 3: BOOK DETAIL & CHAPTER MANAGEMENT -->
+    <section id="view-book-detail" class="space-y-6 hidden">
+      
+      <!-- Back to Library Button -->
+      <div>
+        <button onclick="navigateTo('library')" class="inline-flex items-center gap-2 text-xs font-semibold text-slate-400 hover:text-white transition-colors">
+          <i class="fa-solid fa-arrow-left"></i>
+          <span>Back to Library</span>
+        </button>
+      </div>
+
+      <!-- Book Header Card -->
+      <div class="bg-slate-800/90 border border-slate-700/80 rounded-2xl p-6 shadow-xl">
+        <div id="book-detail-header" class="flex flex-col md:flex-row gap-6">
+          <!-- Rendered dynamically -->
+        </div>
+
+        <!-- Author Actions on Book -->
+        <div id="book-detail-actions" class="mt-6 pt-4 border-t border-slate-700/60 flex flex-wrap items-center gap-3">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+
+      <!-- Chapters List Section -->
+      <div class="space-y-4">
+        <div class="flex items-center justify-between">
+          <h3 class="text-lg font-bold text-white flex items-center gap-2">
+            <span>Published Chapters</span>
+            <span id="chapter-count-badge" class="text-xs bg-slate-800 text-slate-300 font-semibold px-2 py-0.5 rounded-full border border-slate-700">0</span>
+          </h3>
+        </div>
+
+        <div id="chapters-list" class="space-y-3">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+    </section>
+
+
+    <!-- VIEW 4: CHAPTER READER PAGE -->
+    <section id="view-chapter-reader" class="max-w-3xl mx-auto space-y-6 hidden">
+      
+      <!-- Top Reader Header Bar -->
+      <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+        <button id="btn-back-to-book" class="inline-flex items-center gap-2 text-xs font-semibold text-slate-400 hover:text-white transition-colors">
+          <i class="fa-solid fa-arrow-left"></i>
+          <span>Back to Book</span>
+        </button>
+
+        <div id="chapter-reader-nav" class="flex items-center gap-2">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+
+      <!-- Chapter Content Card -->
+      <div class="bg-slate-800/60 border border-slate-700/80 rounded-2xl p-6 sm:p-10 shadow-2xl space-y-6">
+        <div class="text-center border-b border-slate-700/60 pb-6">
+          <span id="reader-chapter-number" class="text-xs font-bold uppercase tracking-widest text-brand-400">Chapter</span>
+          <h1 id="reader-chapter-title" class="text-2xl sm:text-3xl font-extrabold text-white mt-1">Title</h1>
+          <p id="reader-chapter-date" class="text-xs text-slate-400 mt-2">Published</p>
+        </div>
+
+        <div id="reader-chapter-content" class="text-slate-200 text-sm sm:text-base leading-relaxed whitespace-pre-wrap font-serif">
+          <!-- Reader content rendered dynamically -->
+        </div>
+      </div>
+    </section>
+
+
+    <!-- VIEW 5: AUTHOR READER MANAGEMENT PANEL -->
+    <section id="view-readers-panel" class="space-y-6 hidden">
+      
+      <div class="flex items-center justify-between">
+        <button onclick="navigateTo('library')" class="inline-flex items-center gap-2 text-xs font-semibold text-slate-400 hover:text-white transition-colors">
+          <i class="fa-solid fa-arrow-left"></i>
+          <span>Back to Library</span>
+        </button>
+      </div>
+
+      <!-- Header Card -->
+      <div class="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-6 shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-2xl font-extrabold text-white">Registered Readers Directory</h1>
+            <span id="reader-count-badge" class="text-xs font-mono bg-brand-500/10 text-brand-400 border border-brand-500/20 px-2.5 py-0.5 rounded-full font-bold">100 / 100</span>
+          </div>
+          <p class="text-xs text-slate-400 mt-1">Manage single user access or batch import account lists from CSV / Google Sheets.</p>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2">
+          <button onclick="openAddReaderModal()" class="px-3.5 py-2 bg-brand-600 hover:bg-brand-500 text-white rounded-xl text-xs font-semibold shadow transition-all flex items-center gap-1.5">
+            <i class="fa-solid fa-user-plus"></i> Add Reader
+          </button>
+          <button onclick="openImportReadersModal()" class="px-3.5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-semibold shadow transition-all flex items-center gap-1.5">
+            <i class="fa-solid fa-file-import"></i> Import CSV / Google Sheets
+          </button>
+          <button onclick="confirmClearAllReaders()" class="px-3 py-2 bg-red-950/40 hover:bg-red-900/60 border border-red-900/50 text-red-400 rounded-xl text-xs font-medium transition-all">
+            <i class="fa-solid fa-trash-can"></i> Clear All
+          </button>
+        </div>
+      </div>
+
+      <!-- Readers Table -->
+      <div class="bg-slate-800/80 border border-slate-700/80 rounded-2xl overflow-hidden shadow-xl">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-slate-900/80 text-slate-400 uppercase tracking-wider border-b border-slate-700/80 font-mono">
+              <tr>
+                <th class="py-3 px-4">#</th>
+                <th class="py-3 px-4">Username (Col D)</th>
+                <th class="py-3 px-4">Password (Col E)</th>
+                <th class="py-3 px-4">Added Date</th>
+                <th class="py-3 px-4 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="readers-table-body" class="divide-y divide-slate-700/60 text-slate-300">
+              <!-- Rendered dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+
+  <!-- GENERIC MODAL OVERLAY -->
+  <div id="modal-overlay" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div id="modal-content" class="bg-slate-800 border border-slate-700 rounded-2xl max-w-lg w-full p-6 shadow-2xl transform transition-all duration-200 scale-95 opacity-0">
+      
+      <div class="flex items-center justify-between pb-4 border-b border-slate-700/80">
+        <h3 id="modal-title" class="text-base font-bold text-white">Modal Title</h3>
+        <button onclick="closeModal()" class="text-slate-400 hover:text-white p-1">
+          <i class="fa-solid fa-xmark text-base"></i>
+        </button>
+      </div>
+
+      <div id="modal-body" class="py-4 space-y-4">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <div id="modal-footer" class="pt-4 border-t border-slate-700/80 flex items-center justify-end gap-3">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </div>
+
+
+  <!-- TOAST CONTAINER -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 space-y-2 pointer-events-none"></div>
+
+
+  <!-- JAVASCRIPT APPLICATION CODE -->
+  <script>
+    // --- STATE MANAGEMENT ---
+    const MASTER_KEY = 'NihalDaGOAT';
+
+    const state = {
+      user: null, // { role: 'author'|'reader', username: string }
+      currentView: 'login',
+      currentBookId: null,
+      currentChapterId: null,
+      books: [],
+      readers: []
+    };
+
+    // Initial Default Seed Data if Storage Empty
+    const INITIAL_BOOKS = [
+      {
+        id: 'book-1',
+        title: 'Chronicles of Aetheria',
+        author: 'Nihal',
+        genre: 'Fantasy / Adventure',
+        description: 'An epic tale of magic, lost kingdoms, and celestial artifacts waiting to be uncovered by an unlikely squad of adventurers.',
+        coverUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80',
+        chapters: [
+          {
+            id: 'chap-1-1',
+            title: 'The Whispering Ruins',
+            content: `The wind howled through the fractured arches of the ancient Citadel. Kael pulled his cloak tighter against the chill, his hand lingering near the hilt of his starlight blade.\n\n"We shouldn't be here after nightfall," Mara murmured, scanning the overgrown cobblestones. The glowing runes embedded in her staff flickered softly in response to her anxiety.\n\n"The maps were clear," Kael replied without stopping. "If the Crown of Solis is anywhere, it rests within the inner sanctum."\n\nAs they took another step, a sudden resonant hum echoed from deep beneath the earth...`,
+            createdAt: '2026-10-15'
+          },
+          {
+            id: 'chap-1-2',
+            title: 'Shadows in the Mist',
+            content: `The hum deepened into a rhythmic thrum that vibrated right through the soles of Kael's boots. Darkness seemed to fold in around them, thick as smoke.\n\n"Kael, look out!" Mara yelled, raising her staff to ignite a flare of dazzling white light.\n\nIn the burst of illumination, figures materialized from the shadows—guardians of obsidian armor, eyes glowing with unearthly blue light. The sanctuary had not been abandoned; it was waiting.`,
+            createdAt: '2026-10-20'
+          }
+        ]
+      },
+      {
+        id: 'book-2',
+        title: 'Neon Horizon 2099',
+        author: 'Nihal',
+        genre: 'Cyberpunk Sci-Fi',
+        description: 'In a rain-slicked metropolis ruled by megacorporations, a rogue netrunner uncovers an AI signal capable of overwriting reality itself.',
+        coverUrl: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?auto=format&fit=crop&w=600&q=80',
+        chapters: [
+          {
+            id: 'chap-2-1',
+            title: 'Protocol Zero',
+            content: `Rain spilled off the edge of the holographic billboard, illuminated in flickering neon magenta. Dax adjusted his neural interface, connecting to the city grid through an encrypted relay.\n\n"Data stream inbound," his AI companion whispered through his earpiece.\n\nHe watched lines of raw code flood his visor. Deep within the encrypted headers lay an anomaly—a self-replicating sequence with no origin timestamp. It wasn't standard corporate traffic. It was something alive.`,
+            createdAt: '2026-10-28'
+          }
+        ]
+      }
+    ];
+
+    // Seed Readers Demo List (100 accounts: Reader1/001 to Reader100/100)
+    const INITIAL_READERS = Array.from({ length: 100 }).map((_, i) => {
+      const num = i + 1;
+      const formattedPass = String(num).padStart(3, '0'); // 001, 002... 010... 100
+      return {
+        username: `Reader${num}`,
+        password: formattedPass,
+        addedAt: new Date().toISOString().split('T')[0]
+      };
+    });
+
+    // Load persisted state or initial seed
+    function loadStorage() {
+      try {
+        const savedBooks = localStorage.getItem('storycraft_books');
+        state.books = savedBooks ? JSON.parse(savedBooks) : INITIAL_BOOKS;
+
+        const savedReaders = localStorage.getItem('storycraft_readers');
+        state.readers = savedReaders ? JSON.parse(savedReaders) : INITIAL_READERS;
+
+        const savedUser = localStorage.getItem('storycraft_user');
+        if (savedUser) {
+          state.user = JSON.parse(savedUser);
+        }
+      } catch (e) {
+        console.error('Error loading storage', e);
+        state.books = INITIAL_BOOKS;
+        state.readers = INITIAL_READERS;
+      }
+    }
+
+    function saveStorage() {
+      try {
+        localStorage.setItem('storycraft_books', JSON.stringify(state.books));
+        localStorage.setItem('storycraft_readers', JSON.stringify(state.readers));
+        if (state.user) {
+          localStorage.setItem('storycraft_user', JSON.stringify(state.user));
+        } else {
+          localStorage.removeItem('storycraft_user');
+        }
+      } catch (e) {
+        console.error('Error saving storage', e);
+      }
+    }
+
+    // --- NAVIGATION & VIEWS ---
+    function navigateTo(view, bookId = null, chapterId = null) {
+      state.currentView = view;
+      if (bookId !== null) state.currentBookId = bookId;
+      if (chapterId !== null) state.currentChapterId = chapterId;
+
+      // Hide all view sections
+      document.querySelectorAll('main > section').forEach(sec => sec.classList.add('hidden'));
+
+      // Update Nav Bar User State
+      renderNavControls();
+
+      // View router
+      if (!state.user && view !== 'login') {
+        view = 'login';
+      }
+
+      switch (view) {
+        case 'login':
+          document.getElementById('view-login').classList.remove('hidden');
+          break;
+        case 'library':
+          document.getElementById('view-library').classList.remove('hidden');
+          renderLibrary();
+          break;
+        case 'book-detail':
+          document.getElementById('view-book-detail').classList.remove('hidden');
+          renderBookDetail();
+          break;
+        case 'chapter-reader':
+          document.getElementById('view-chapter-reader').classList.remove('hidden');
+          renderChapterReader();
+          break;
+        case 'readers-panel':
+          if (state.user?.role !== 'author') {
+            showToast('Access denied: Authors only.', 'error');
+            navigateTo('library');
+            return;
+          }
+          document.getElementById('view-readers-panel').classList.remove('hidden');
+          renderReadersPanel();
+          break;
+        default:
+          document.getElementById('view-login').classList.remove('hidden');
+      }
+    }
+
+    function switchLoginTab(tab) {
+      const masterBtn = document.getElementById('tab-master-btn');
+      const readerBtn = document.getElementById('tab-reader-btn');
+      const masterForm = document.getElementById('form-master-login');
+      const readerForm = document.getElementById('form-reader-login');
+
+      if (tab === 'master') {
+        masterBtn.className = 'flex-1 py-2 text-xs font-semibold rounded-lg transition-all bg-brand-600 text-white shadow';
+        readerBtn.className = 'flex-1 py-2 text-xs font-semibold rounded-lg transition-all text-slate-400 hover:text-white';
+        masterForm.classList.remove('hidden');
+        readerForm.classList.add('hidden');
+      } else {
+        readerBtn.className = 'flex-1 py-2 text-xs font-semibold rounded-lg transition-all bg-indigo-600 text-white shadow';
+        masterBtn.className = 'flex-1 py-2 text-xs font-semibold rounded-lg transition-all text-slate-400 hover:text-white';
+        readerForm.classList.remove('hidden');
+        masterForm.classList.add('hidden');
+      }
+    }
+
+    // --- AUTHENTICATION HANDLERS ---
+    function handleMasterLogin(e) {
+      e.preventDefault();
+      const passInput = document.getElementById('input-master-pass').value.trim();
+
+      if (passInput === MASTER_KEY) {
+        state.user = { role: 'author', username: 'Author (Nihal)' };
+        saveStorage();
+        showToast('Welcome Author! Master Access Granted.', 'success');
+        navigateTo('library');
+      } else {
+        showToast('Invalid Master Password!', 'error');
+      }
+    }
+
+    function handleReaderLogin(e) {
+      e.preventDefault();
+      const userVal = document.getElementById('input-reader-user').value.trim();
+      const passVal = document.getElementById('input-reader-pass').value.trim();
+
+      // Match reader in registered array
+      const matchedReader = state.readers.find(r => {
+        const matchesUser = r.username.toLowerCase() === userVal.toLowerCase();
+        // Allow padded string or unpadded integer passwords (e.g., "001" or "1")
+        const matchesPass = r.password === passVal || String(parseInt(r.password, 10)) === passVal || String(parseInt(passVal, 10)).padStart(3, '0') === r.password;
+        return matchesUser && matchesPass;
+      });
+
+      if (matchedReader) {
+        state.user = { role: 'reader', username: matchedReader.username };
+        saveStorage();
+        showToast(`Welcome back, ${matchedReader.username}!`, 'success');
+        navigateTo('library');
+      } else {
+        showToast('Invalid Username or Password.', 'error');
+      }
+    }
+
+    function logout() {
+      state.user = null;
+      saveStorage();
+      showToast('Signed out successfully.', 'info');
+      navigateTo('login');
+    }
+
+    function renderNavControls() {
+      const container = document.getElementById('nav-user-controls');
+      if (!state.user) {
+        container.innerHTML = `
+          <button onclick="navigateTo('login')" class="text-xs px-3 py-2 bg-slate-700 hover:bg-slate-600 rounded-lg font-semibold text-white transition-all">
+            Sign In
+          </button>
+        `;
+        return;
+      }
+
+      const isAuthor = state.user.role === 'author';
+      container.innerHTML = `
+        <div class="flex items-center gap-3">
+          <div class="text-right hidden sm:block">
+            <span class="block text-xs font-bold text-white">${state.user.username}</span>
+            <span class="text-[10px] text-slate-400 uppercase tracking-wider">${isAuthor ? 'Master Admin' : 'Registered Reader'}</span>
+          </div>
+          ${isAuthor ? `
+            <button onclick="openGitHubSyncModal()" class="px-3 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-xs font-semibold shadow transition-all flex items-center gap-1.5" title="Configure GitHub Auto-Sync">
+              <i class="fa-brands fa-github"></i> <span class="hidden md:inline">GitHub Sync</span>
+            </button>
+            <button onclick="exportPermanentCode()" class="px-3 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold shadow transition-all flex items-center gap-1.5" title="Save & Export Code">
+              <i class="fa-solid fa-file-code"></i> <span class="hidden md:inline">Save & Export Code</span>
+            </button>
+            <button onclick="navigateTo('readers-panel')" class="p-2 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-lg text-xs font-medium transition-all" title="Manage Reader Accounts">
+              <i class="fa-solid fa-users text-brand-400"></i>
+            </button>
+          ` : ''}
+          <button onclick="logout()" class="p-2 bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-red-400 border border-slate-700 rounded-lg text-xs transition-all" title="Sign Out">
+            <i class="fa-solid fa-right-from-bracket"></i>
+          </button>
+        </div>
+      `;
+    }
+
+    // --- RENDER VIEWS ---
+    function renderLibrary() {
+      const isAuthor = state.user?.role === 'author';
+      document.getElementById('badge-role').textContent = isAuthor ? 'Author Mode' : 'Reader Mode';
+      document.getElementById('badge-role').className = `text-xs px-2.5 py-0.5 rounded-full font-medium border ${
+        isAuthor ? 'bg-brand-500/10 text-brand-400 border-brand-500/20' : 'bg-indigo-500/10 text-indigo-400 border-indigo-500/20'
+      }`;
+
+      const totalChapters = state.books.reduce((acc, b) => acc + b.chapters.length, 0);
+      document.getElementById('stats-summary').textContent = `• ${state.books.length} Books • ${totalChapters} Chapters Published`;
+
+      const actionsContainer = document.getElementById('library-actions');
+      if (isAuthor) {
+        actionsContainer.innerHTML = `
+          <button onclick="openAddBookModal()" class="w-full md:w-auto px-4 py-2 bg-brand-600 hover:bg-brand-500 text-white font-semibold text-xs rounded-xl shadow-lg shadow-brand-600/30 transition-all flex items-center justify-center gap-2">
+            <i class="fa-solid fa-plus"></i>
+            <span>Add New Book</span>
+          </button>
+        `;
+      } else {
+        actionsContainer.innerHTML = '';
+      }
+
+      const searchVal = document.getElementById('input-search-books')?.value.toLowerCase() || '';
+      const grid = document.getElementById('books-grid');
+      
+      const filteredBooks = state.books.filter(b => 
+        b.title.toLowerCase().includes(searchVal) ||
+        b.author.toLowerCase().includes(searchVal) ||
+        b.genre.toLowerCase().includes(searchVal)
+      );
+
+      if (filteredBooks.length === 0) {
+        grid.innerHTML = `
+          <div class="col-span-full py-16 text-center bg-slate-800/30 border border-slate-800 rounded-2xl">
+            <i class="fa-solid fa-book-open text-4xl text-slate-600 mb-3"></i>
+            <h3 class="text-base font-bold text-slate-300">No Books Found</h3>
+            <p class="text-xs text-slate-500 mt-1">${searchVal ? 'Try adjusting your search criteria.' : 'Click "Add New Book" to publish your first work.'}</p>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = filteredBooks.map(book => `
+        <div class="bg-slate-800/80 border border-slate-700/80 rounded-2xl overflow-hidden shadow-xl hover:border-slate-600 transition-all flex flex-col group">
+          <div class="h-48 overflow-hidden relative bg-slate-950">
+            <img src="${book.coverUrl}" alt="${book.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://placehold.co/600x400/1e293b/38bdf8?text=StoryCraft+Cover'">
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent"></div>
+            <span class="absolute top-3 right-3 text-[10px] font-bold uppercase tracking-wider bg-slate-900/80 text-brand-400 border border-slate-700 px-2.5 py-1 rounded-full backdrop-blur-md">
+              ${book.genre}
+            </span>
+          </div>
+
+          <div class="p-5 flex-1 flex flex-col justify-between space-y-4">
+            <div>
+              <h3 class="text-base font-bold text-white group-hover:text-brand-400 transition-colors">${book.title}</h3>
+              <p class="text-xs text-slate-400 mt-0.5">By ${book.author}</p>
+              <p class="text-xs text-slate-300 line-clamp-2 mt-2 leading-relaxed">${book.description}</p>
+            </div>
+
+            <div class="pt-3 border-t border-slate-700/60 flex items-center justify-between">
+              <span class="text-xs text-slate-400 font-medium">
+                <i class="fa-solid fa-list-ol mr-1 text-slate-500"></i> ${book.chapters.length} ${book.chapters.length === 1 ? 'Chapter' : 'Chapters'}
+              </span>
+
+              <button onclick="navigateTo('book-detail', '${book.id}')" class="px-3.5 py-1.5 bg-slate-700 hover:bg-brand-600 text-white rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5">
+                <span>View Book</span>
+                <i class="fa-solid fa-chevron-right text-[10px]"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderBookDetail() {
+      const book = state.books.find(b => b.id === state.currentBookId);
+      if (!book) {
+        navigateTo('library');
+        return;
+      }
+
+      const isAuthor = state.user?.role === 'author';
+
+      // Detail Header
+      document.getElementById('book-detail-header').innerHTML = `
+        <div class="w-32 h-44 rounded-xl overflow-hidden shadow-lg bg-slate-950 shrink-0 mx-auto md:mx-0">
+          <img src="${book.coverUrl}" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/400x600/1e293b/38bdf8?text=Book+Cover'">
+        </div>
+        <div class="flex-1 space-y-2 text-center md:text-left">
+          <span class="text-[10px] font-bold uppercase tracking-wider text-brand-400 bg-brand-500/10 border border-brand-500/20 px-2.5 py-0.5 rounded-full inline-block">
+            ${book.genre}
+          </span>
+          <h1 class="text-2xl font-extrabold text-white">${book.title}</h1>
+          <p class="text-xs text-slate-400">Written by <span class="text-slate-200 font-medium">${book.author}</span></p>
+          <p class="text-xs text-slate-300 leading-relaxed max-w-2xl pt-1">${book.description}</p>
+        </div>
+      `;
+
+      // Author Actions
+      const actionsContainer = document.getElementById('book-detail-actions');
+      if (isAuthor) {
+        actionsContainer.innerHTML = `
+          <button onclick="openPublishChapterModal('${book.id}')" class="px-4 py-2 bg-brand-600 hover:bg-brand-500 text-white font-semibold text-xs rounded-xl shadow transition-all flex items-center gap-1.5">
+            <i class="fa-solid fa-file-circle-plus"></i> Publish New Chapter
+          </button>
+          <button onclick="confirmDeleteBook('${book.id}')" class="px-3.5 py-2 bg-red-950/40 hover:bg-red-900/60 text-red-400 border border-red-900/50 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5 ml-auto">
+            <i class="fa-solid fa-trash-can"></i> Delete Book
+          </button>
+        `;
+      } else {
+        actionsContainer.innerHTML = '';
+      }
+
+      // Chapters List
+      document.getElementById('chapter-count-badge').textContent = book.chapters.length;
+      const chaptersList = document.getElementById('chapters-list');
+
+      if (book.chapters.length === 0) {
+        chaptersList.innerHTML = `
+          <div class="py-12 text-center bg-slate-800/40 border border-slate-800 rounded-2xl">
+            <p class="text-xs text-slate-400">No chapters published yet.</p>
+            ${isAuthor ? '<p class="text-xs text-brand-400 mt-1 cursor-pointer font-medium" onclick="openPublishChapterModal(\'' + book.id + '\')">+ Publish Chapter 1</p>' : ''}
+          </div>
+        `;
+        return;
+      }
+
+      chaptersList.innerHTML = book.chapters.map((chap, idx) => `
+        <div class="bg-slate-800/80 border border-slate-700/80 hover:border-slate-600 rounded-xl p-4 flex items-center justify-between transition-all gap-4">
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-lg bg-slate-900 border border-slate-700 flex items-center justify-center font-bold text-xs text-brand-400">
+              ${idx + 1}
+            </div>
+            <div>
+              <h4 class="text-sm font-bold text-white hover:text-brand-400 cursor-pointer" onclick="navigateTo('chapter-reader', '${book.id}', '${chap.id}')">${chap.title}</h4>
+              <p class="text-[10px] text-slate-400 mt-0.5">Published ${chap.createdAt}</p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button onclick="navigateTo('chapter-reader', '${book.id}', '${chap.id}')" class="px-3 py-1.5 bg-slate-700 hover:bg-brand-600 text-white rounded-lg text-xs font-semibold transition-all">
+              Read
+            </button>
+            ${isAuthor ? `
+              <button onclick="confirmDeleteChapter('${book.id}', '${chap.id}')" class="p-1.5 text-slate-400 hover:text-red-400 transition-colors" title="Delete Chapter">
+                <i class="fa-solid fa-trash-can text-xs"></i>
+              </button>
+            ` : ''}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderChapterReader() {
+      const book = state.books.find(b => b.id === state.currentBookId);
+      if (!book) {
+        navigateTo('library');
+        return;
+      }
+
+      const chapterIndex = book.chapters.findIndex(c => c.id === state.currentChapterId);
+      const chapter = book.chapters[chapterIndex];
+
+      if (!chapter) {
+        navigateTo('book-detail', book.id);
+        return;
+      }
+
+      document.getElementById('btn-back-to-book').onclick = () => navigateTo('book-detail', book.id);
+      document.getElementById('reader-chapter-number').textContent = `Chapter ${chapterIndex + 1} of ${book.chapters.length}`;
+      document.getElementById('reader-chapter-title').textContent = chapter.title;
+      document.getElementById('reader-chapter-date').textContent = `Published on ${chapter.createdAt} • ${book.title}`;
+      document.getElementById('reader-chapter-content').textContent = chapter.content;
+
+      // Nav previous / next chapter buttons
+      const prevChap = book.chapters[chapterIndex - 1];
+      const nextChap = book.chapters[chapterIndex + 1];
+
+      document.getElementById('chapter-reader-nav').innerHTML = `
+        ${prevChap ? `
+          <button onclick="navigateTo('chapter-reader', '${book.id}', '${prevChap.id}')" class="px-3 py-1.5 bg-slate-800 border border-slate-700 text-slate-300 hover:text-white rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all">
+            <i class="fa-solid fa-chevron-left text-[10px]"></i> Prev
+          </button>
+        ` : ''}
+        ${nextChap ? `
+          <button onclick="navigateTo('chapter-reader', '${book.id}', '${nextChap.id}')" class="px-3 py-1.5 bg-brand-600 hover:bg-brand-500 text-white rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all">
+            Next <i class="fa-solid fa-chevron-right text-[10px]"></i>
+          </button>
+        ` : ''}
+      `;
+    }
+
+    function renderReadersPanel() {
+      document.getElementById('reader-count-badge').textContent = `${state.readers.length} Accounts`;
+      const tbody = document.getElementById('readers-table-body');
+
+      if (state.readers.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="5" class="py-8 text-center text-slate-500">No reader credentials found. Click "Import CSV / Google Sheets" to add credentials.</td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = state.readers.map((r, i) => `
+        <tr class="hover:bg-slate-700/30 transition-colors">
+          <td class="py-3 px-4 font-mono text-slate-500">${i + 1}</td>
+          <td class="py-3 px-4 font-bold text-white">${r.username}</td>
+          <td class="py-3 px-4 font-mono text-brand-400 bg-slate-900/40 rounded px-2 py-1 inline-block my-1">${r.password}</td>
+          <td class="py-3 px-4 text-slate-400">${r.addedAt || 'Default'}</td>
+          <td class="py-3 px-4 text-right">
+            <button onclick="confirmDeleteReader('${r.username}')" class="text-slate-400 hover:text-red-400 transition-colors p-1">
+              <i class="fa-solid fa-trash-can"></i>
+            </button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    // --- MODALS & MODAL ACTIONS ---
+    function openModal(title, bodyHtml, footerButtons = []) {
+      document.getElementById('modal-title').textContent = title;
+      document.getElementById('modal-body').innerHTML = bodyHtml;
+      
+      const footer = document.getElementById('modal-footer');
+      footer.innerHTML = footerButtons.map(btn => `
+        <button onclick="${btn.onClick}" class="${btn.class}">
+          ${btn.label}
+        </button>
+      `).join('');
+
+      const overlay = document.getElementById('modal-overlay');
+      const content = document.getElementById('modal-content');
+      
+      overlay.classList.remove('hidden');
+      setTimeout(() => {
+        content.classList.remove('scale-95', 'opacity-0');
+        content.classList.add('scale-100', 'opacity-100');
+      }, 10);
+    }
+
+    function closeModal() {
+      const overlay = document.getElementById('modal-overlay');
+      const content = document.getElementById('modal-content');
+      
+      content.classList.remove('scale-100', 'opacity-100');
+      content.classList.add('scale-95', 'opacity-0');
+      setTimeout(() => overlay.classList.add('hidden'), 150);
+    }
+
+    // Book Creation Modal
+    function openAddBookModal() {
+      const body = `
+        <div class="space-y-4">
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Book Title *</label>
+            <input type="text" id="modal-book-title" required placeholder="e.g. The Quantum Paradox" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white focus:border-brand-500 outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Author Name *</label>
+            <input type="text" id="modal-book-author" value="${state.user?.username.replace('Author (', '').replace(')', '') || 'Nihal'}" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white focus:border-brand-500 outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Genre *</label>
+            <input type="text" id="modal-book-genre" placeholder="e.g. Sci-Fi, Mystery, Fantasy" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white focus:border-brand-500 outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Cover Image URL (Optional)</label>
+            <input type="url" id="modal-book-cover" placeholder="https://..." class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white focus:border-brand-500 outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Description / Synopsis</label>
+            <textarea id="modal-book-desc" rows="3" placeholder="Provide a brief synopsis of your book..." class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white focus:border-brand-500 outline-none"></textarea>
+          </div>
+        </div>
+      `;
+
+      openModal(
+        'Add New Book to Studio',
+        body,
+        [
+          { label: 'Cancel', onClick: 'closeModal()', class: 'px-4 py-2 text-xs font-semibold text-slate-400 hover:text-white' },
+          { label: 'Create & Save Book', onClick: 'submitAddBook()', class: 'px-4 py-2 text-xs font-semibold bg-brand-600 hover:bg-brand-500 text-white rounded-xl shadow' }
+        ]
+      );
+    }
+
+    async function submitAddBook() {
+      const title = document.getElementById('modal-book-title').value.trim();
+      const author = document.getElementById('modal-book-author').value.trim();
+      const genre = document.getElementById('modal-book-genre').value.trim() || 'General Literature';
+      const coverUrl = document.getElementById('modal-book-cover').value.trim() || 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=600&q=80';
+      const description = document.getElementById('modal-book-desc').value.trim() || 'No description provided.';
+
+      if (!title || !author) {
+        showToast('Title and Author fields are required.', 'error');
+        return;
+      }
+
+      const newBook = {
+        id: 'book-' + Date.now(),
+        title,
+        author,
+        genre,
+        coverUrl,
+        description,
+        chapters: []
+      };
+
+      state.books.unshift(newBook);
+      saveStorage();
+      closeModal();
+      showToast(`"${title}" added successfully!`, 'success');
+      renderLibrary();
+      await triggerGitHubAutoCommit(`Add new book: ${title}`);
+    }
+
+    // Publish Chapter Modal
+    function openPublishChapterModal(bookId) {
+      const book = state.books.find(b => b.id === bookId);
+      if (!book) return;
+
+      const chapNum = book.chapters.length + 1;
+
+      const body = `
+        <div class="space-y-4">
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Chapter Title *</label>
+            <input type="text" id="modal-chap-title" value="Chapter ${chapNum}: " class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white focus:border-brand-500 outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Chapter Content *</label>
+            <textarea id="modal-chap-content" rows="8" placeholder="Type or paste your chapter text here..." class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white focus:border-brand-500 outline-none font-serif leading-relaxed"></textarea>
+          </div>
+        </div>
+      `;
+
+      openModal(
+        `Publish Chapter for "${book.title}"`,
+        body,
+        [
+          { label: 'Cancel', onClick: 'closeModal()', class: 'px-4 py-2 text-xs font-semibold text-slate-400 hover:text-white' },
+          { label: 'Publish Chapter', onClick: `submitPublishChapter('${bookId}')`, class: 'px-4 py-2 text-xs font-semibold bg-brand-600 hover:bg-brand-500 text-white rounded-xl shadow' }
+        ]
+      );
+    }
+
+    async function submitPublishChapter(bookId) {
+      const book = state.books.find(b => b.id === bookId);
+      if (!book) return;
+
+      const title = document.getElementById('modal-chap-title').value.trim();
+      const content = document.getElementById('modal-chap-content').value.trim();
+
+      if (!title || !content) {
+        showToast('Both Title and Content are required.', 'error');
+        return;
+      }
+
+      const newChapter = {
+        id: 'chap-' + Date.now(),
+        title,
+        content,
+        createdAt: new Date().toISOString().split('T')[0]
+      };
+
+      book.chapters.push(newChapter);
+      saveStorage();
+      closeModal();
+      showToast(`Published "${title}"!`, 'success');
+      renderBookDetail();
+      await triggerGitHubAutoCommit(`Publish chapter "${title}" for ${book.title}`);
+    }
+
+    // Delete Book Confirm
+    function confirmDeleteBook(bookId) {
+      const book = state.books.find(b => b.id === bookId);
+      if (!book) return;
+
+      openModal(
+        'Confirm Delete Book',
+        `<p class="text-xs text-slate-300">Are you sure you want to delete <strong>"${book.title}"</strong> and all its published chapters? This cannot be undone.</p>`,
+        [
+          { label: 'Cancel', onClick: 'closeModal()', class: 'px-4 py-2 text-xs font-semibold text-slate-400 hover:text-white' },
+          { label: 'Delete Book', onClick: `submitDeleteBook('${bookId}')`, class: 'px-4 py-2 text-xs font-semibold bg-red-600 hover:bg-red-500 text-white rounded-xl shadow' }
+        ]
+      );
+    }
+
+    async function submitDeleteBook(bookId) {
+      const book = state.books.find(b => b.id === bookId);
+      const title = book ? book.title : 'Book';
+      state.books = state.books.filter(b => b.id !== bookId);
+      saveStorage();
+      closeModal();
+      showToast('Book deleted.', 'info');
+      navigateTo('library');
+      await triggerGitHubAutoCommit(`Delete book: ${title}`);
+    }
+
+    // Delete Chapter Confirm
+    function confirmDeleteChapter(bookId, chapId) {
+      openModal(
+        'Delete Chapter',
+        `<p class="text-xs text-slate-300">Are you sure you want to remove this chapter from the book?</p>`,
+        [
+          { label: 'Cancel', onClick: 'closeModal()', class: 'px-4 py-2 text-xs font-semibold text-slate-400 hover:text-white' },
+          { label: 'Delete Chapter', onClick: `submitDeleteChapter('${bookId}', '${chapId}')`, class: 'px-4 py-2 text-xs font-semibold bg-red-600 hover:bg-red-500 text-white rounded-xl shadow' }
+        ]
+      );
+    }
+
+    async function submitDeleteChapter(bookId, chapId) {
+      const book = state.books.find(b => b.id === bookId);
+      if (book) {
+        book.chapters = book.chapters.filter(c => c.id !== chapId);
+        saveStorage();
+        closeModal();
+        showToast('Chapter removed.', 'info');
+        renderBookDetail();
+        await triggerGitHubAutoCommit(`Delete chapter from ${book.title}`);
+      }
+    }
+
+    // Reader Modals
+    function openAddReaderModal() {
+      const body = `
+        <div class="space-y-4">
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Reader Username (Col D)</label>
+            <input type="text" id="modal-reader-user" placeholder="e.g. Reader101" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white focus:border-brand-500 outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Reader Password (Col E)</label>
+            <input type="text" id="modal-reader-pass" placeholder="e.g. 101" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white focus:border-brand-500 outline-none">
+          </div>
+        </div>
+      `;
+
+      openModal(
+        'Add Reader Account',
+        body,
+        [
+          { label: 'Cancel', onClick: 'closeModal()', class: 'px-4 py-2 text-xs font-semibold text-slate-400 hover:text-white' },
+          { label: 'Add Reader', onClick: 'submitAddReader()', class: 'px-4 py-2 text-xs font-semibold bg-brand-600 hover:bg-brand-500 text-white rounded-xl shadow' }
+        ]
+      );
+    }
+
+    async function submitAddReader() {
+      const user = document.getElementById('modal-reader-user').value.trim();
+      const pass = document.getElementById('modal-reader-pass').value.trim();
+
+      if (!user || !pass) {
+        showToast('Username and password are required.', 'error');
+        return;
+      }
+
+      state.readers.push({
+        username: user,
+        password: pass,
+        addedAt: new Date().toISOString().split('T')[0]
+      });
+
+      saveStorage();
+      closeModal();
+      showToast(`Reader "${user}" added!`, 'success');
+      renderReadersPanel();
+      await triggerGitHubAutoCommit(`Add reader: ${user}`);
+    }
+
+    function openImportReadersModal() {
+      const body = `
+        <div class="space-y-3">
+          <p class="text-xs text-slate-400">Paste your table directly from Google Sheets or CSV format. Both Column D/E format and 2-column format are automatically handled!</p>
+          <textarea id="import-csv-text" rows="8" placeholder="Paste data here..." class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white font-mono focus:border-brand-500 outline-none"></textarea>
+        </div>
+      `;
+
+      openModal(
+        'Import Batch Readers from Google Sheets / CSV',
+        body,
+        [
+          { label: 'Cancel', onClick: 'closeModal()', class: 'px-4 py-2 text-xs font-semibold text-slate-400 hover:text-white' },
+          { label: 'Import Accounts', onClick: 'submitImportReaders()', class: 'px-4 py-2 text-xs font-semibold bg-brand-600 hover:bg-brand-500 text-white rounded-xl shadow' }
+        ]
+      );
+    }
+
+    async function submitImportReaders() {
+      const rawText = document.getElementById('import-csv-text').value.trim();
+      if (!rawText) {
+        showToast('Please paste data to import.', 'error');
+        return;
+      }
+
+      const lines = rawText.split('\n');
+      let addedCount = 0;
+
+      lines.forEach(line => {
+        if (!line.trim()) return;
+        const cols = line.includes('\t') ? line.split('\t') : line.split(',');
+        let user = '';
+        let pass = '';
+
+        if (cols.length >= 5) {
+          user = cols[3]?.trim();
+          pass = cols[4]?.trim();
+        } else if (cols.length >= 2) {
+          user = cols[0]?.trim();
+          pass = cols[1]?.trim();
+        }
+
+        if (user && pass && user.toLowerCase() !== 'username') {
+          if (!state.readers.some(r => r.username.toLowerCase() === user.toLowerCase())) {
+            state.readers.push({ username: user, password: pass, addedAt: new Date().toISOString().split('T')[0] });
+            addedCount++;
+          }
+        }
+      });
+
+      saveStorage();
+      closeModal();
+      showToast(`Successfully imported ${addedCount} reader accounts!`, 'success');
+      renderReadersPanel();
+      await triggerGitHubAutoCommit(`Import ${addedCount} reader accounts`);
+    }
+
+    function confirmClearAllReaders() {
+      openModal(
+        'Clear All Readers?',
+        '<p class="text-xs text-slate-300">Are you sure you want to delete all registered reader credentials?</p>',
+        [
+          { label: 'Cancel', onClick: 'closeModal()', class: 'px-4 py-2 text-xs font-semibold text-slate-400 hover:text-white' },
+          { label: 'Delete All', onClick: 'clearAllReaders()', class: 'px-4 py-2 text-xs font-semibold bg-red-600 hover:bg-red-500 text-white rounded-xl shadow' }
+        ]
+      );
+    }
+
+    async function clearAllReaders() {
+      state.readers = [];
+      saveStorage();
+      closeModal();
+      showToast('All readers cleared.', 'info');
+      renderReadersPanel();
+      await triggerGitHubAutoCommit('Clear all reader accounts');
+    }
+
+    function confirmDeleteReader(username) {
+      state.readers = state.readers.filter(r => r.username !== username);
+      saveStorage();
+      showToast(`Reader "${username}" removed.`, 'info');
+      renderReadersPanel();
+      triggerGitHubAutoCommit(`Remove reader: ${username}`);
+    }
+
+    // --- PERMANENT SOURCE CODE EXPORT & GITHUB SYNC ---
+    function generateStandaloneHtml() {
+      let currentDoc = document.documentElement.outerHTML;
+
+      // Replace embedded state constants with current state JSON
+      const booksJson = JSON.stringify(state.books, null, 2);
+      const readersJson = JSON.stringify(state.readers, null, 2);
+
+      currentDoc = currentDoc.replace(/const INITIAL_BOOKS = \[[\s\S]*?\];\n/, `const INITIAL_BOOKS = ${booksJson};\n`);
+      currentDoc = currentDoc.replace(/const INITIAL_READERS = \[[\s\S]*?\];\n/, `const INITIAL_READERS = ${readersJson};\n`);
+
+      return "<!DOCTYPE html>\n" + currentDoc;
+    }
+
+    function exportPermanentCode() {
+      const fullHtml = generateStandaloneHtml();
+      const blob = new Blob([fullHtml], { type: 'text/html' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'index.html';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      showToast('Downloaded updated index.html!', 'success');
+    }
+
+    function openGitHubSyncModal() {
+      const savedRepo = localStorage.getItem('storycraft_gh_repo') || '';
+      const savedToken = localStorage.getItem('storycraft_gh_token') || '';
+      const savedFilePath = localStorage.getItem('storycraft_gh_filepath') || 'index.html';
+
+      const body = `
+        <div class="space-y-4">
+          <p class="text-xs text-slate-400">Connect to your GitHub Repository to automatically commit changes whenever you add/delete books, publish chapters, or update readers.</p>
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">GitHub Repository (username/repo)</label>
+            <input type="text" id="modal-gh-repo" value="${savedRepo}" placeholder="e.g. username/my-book-platform" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white focus:border-brand-500 outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Personal Access Token (PAT)</label>
+            <input type="password" id="modal-gh-token" value="${savedToken}" placeholder="ghp_xxxxxxxxxxxx" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white focus:border-brand-500 outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">File Path in Repo</label>
+            <input type="text" id="modal-gh-filepath" value="${savedFilePath}" placeholder="index.html" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white focus:border-brand-500 outline-none">
+          </div>
+        </div>
+      `;
+
+      openModal(
+        'GitHub Auto-Sync Settings',
+        body,
+        [
+          { label: 'Cancel', onClick: 'closeModal()', class: 'px-4 py-2 text-xs font-semibold text-slate-400 hover:text-white' },
+          { label: 'Save & Commit Now', onClick: 'saveGitHubSettings()', class: 'px-4 py-2 text-xs font-semibold bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl shadow' }
+        ]
+      );
+    }
+
+    async function saveGitHubSettings() {
+      const repo = document.getElementById('modal-gh-repo').value.trim();
+      const token = document.getElementById('modal-gh-token').value.trim();
+      const filePath = document.getElementById('modal-gh-filepath').value.trim() || 'index.html';
+
+      if (!repo || !token) {
+        showToast('Repository and Token are required.', 'error');
+        return;
+      }
+
+      localStorage.setItem('storycraft_gh_repo', repo);
+      localStorage.setItem('storycraft_gh_token', token);
+      localStorage.setItem('storycraft_gh_filepath', filePath);
+
+      closeModal();
+      showToast('Syncing with GitHub...', 'info');
+      await triggerGitHubAutoCommit('Initialize GitHub auto-sync');
+    }
+
+    async function triggerGitHubAutoCommit(commitMessage = 'Update library state') {
+      const repo = localStorage.getItem('storycraft_gh_repo');
+      const token = localStorage.getItem('storycraft_gh_token');
+      const filePath = localStorage.getItem('storycraft_gh_filepath') || 'index.html';
+
+      if (!repo || !token) return;
+
+      try {
+        const fullContent = generateStandaloneHtml();
+        const encodedContent = btoa(unescape(encodeURIComponent(fullContent)));
+
+        // Get current file sha if exists
+        const getUrl = `https://api.github.com/repos/${repo}/contents/${filePath}`;
+        let sha = null;
+
+        const getRes = await fetch(getUrl, {
+          headers: { 'Authorization': `token ${token}` }
+        });
+
+        if (getRes.ok) {
+          const fileData = await getRes.json();
+          sha = fileData.sha;
+        }
+
+        // Put request to update content
+        const putRes = await fetch(getUrl, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `token ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            message: commitMessage,
+            content: encodedContent,
+            sha: sha || undefined
+          })
+        });
+
+        if (putRes.ok) {
+          showToast('Committed directly to GitHub!', 'success');
+        } else {
+          const err = await putRes.json();
+          showToast(`GitHub Commit Error: ${err.message}`, 'error');
+        }
+      } catch (e) {
+        console.error('GitHub API failure', e);
+      }
+    }
+
+    // Toast Utility
+    function showToast(msg, type = 'info') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      
+      const colors = {
+        success: 'bg-emerald-600 text-white',
+        error: 'bg-red-600 text-white',
+        info: 'bg-slate-800 text-slate-100 border border-slate-700'
+      };
+
+      toast.className = `px-4 py-2.5 rounded-xl text-xs font-semibold shadow-2xl flex items-center gap-2 transform transition-all duration-300 translate-y-2 opacity-0 ${colors[type] || colors.info}`;
+      toast.innerHTML = `<span>${msg}</span>`;
+
+      container.appendChild(toast);
+
+      setTimeout(() => {
+        toast.classList.remove('translate-y-2', 'opacity-0');
+      }, 10);
+
+      setTimeout(() => {
+        toast.classList.add('opacity-0');
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    // Application Initialization
+    window.onload = function() {
+      loadStorage();
+      if (state.user) {
+        navigateTo('library');
+      } else {
+        navigateTo('login');
+      }
+    };
+  </script>
+</body>
+</html>
