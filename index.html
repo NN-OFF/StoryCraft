@@ -696,7 +696,7 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
         <div>
           <div class="flex items-center gap-2 mb-1">
             <span id="badge-role" class="text-xs px-2.5 py-0.5 rounded-full font-medium border bg-brand-500/10 text-brand-400 border-brand-500/20">Author Mode</span>
-            <span id="stats-summary" class="text-xs text-slate-400">• 1 Books • 1 Chapters Published</span>
+            <span id="stats-summary" class="text-xs text-slate-400">• 0 Books • 0 Chapters Published</span>
           </div>
           <h1 class="text-2xl font-extrabold text-white">Story Library &amp; Catalog</h1>
           <p class="text-xs text-slate-400 mt-1">Browse published works or select a book to manage its chapters.</p>
@@ -720,35 +720,12 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
 
       <!-- Books Grid -->
       <div id="books-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div class="bg-slate-800/80 border border-slate-700/80 rounded-2xl overflow-hidden shadow-xl hover:border-slate-600 transition-all flex flex-col group">
-          <div class="h-48 overflow-hidden relative bg-slate-950">
-            <img src="https://images.unsplash.com/photo-1508739773434-c26b3d09e071?auto=format&amp;fit=crop&amp;w=600&amp;q=80" alt="Neon Horizon 2099" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://placehold.co/600x400/1e293b/38bdf8?text=StoryCraft+Cover'">
-            <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent"></div>
-            <span class="absolute top-3 right-3 text-[10px] font-bold uppercase tracking-wider bg-slate-900/80 text-brand-400 border border-slate-700 px-2.5 py-1 rounded-full backdrop-blur-md">
-              Cyberpunk Sci-Fi
-            </span>
-          </div>
-
-          <div class="p-5 flex-1 flex flex-col justify-between space-y-4">
-            <div>
-              <h3 class="text-base font-bold text-white group-hover:text-brand-400 transition-colors">Neon Horizon 2099</h3>
-              <p class="text-xs text-slate-400 mt-0.5">By Nihal</p>
-              <p class="text-xs text-slate-300 line-clamp-2 mt-2 leading-relaxed">In a rain-slicked metropolis ruled by megacorporations, a rogue netrunner uncovers an AI signal capable of overwriting reality itself.</p>
-            </div>
-
-            <div class="pt-3 border-t border-slate-700/60 flex items-center justify-between">
-              <span class="text-xs text-slate-400 font-medium">
-                <i class="fa-solid fa-list-ol mr-1 text-slate-500"></i> 1 Chapter
-              </span>
-
-              <button onclick="navigateTo('book-detail', 'book-2')" class="px-3.5 py-1.5 bg-slate-700 hover:bg-brand-600 text-white rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5">
-                <span>View Book</span>
-                <i class="fa-solid fa-chevron-right text-[10px]"></i>
-              </button>
-            </div>
+          <div class="col-span-full py-16 text-center bg-slate-800/30 border border-slate-800 rounded-2xl">
+            <i class="fa-solid fa-book-open text-4xl text-slate-600 mb-3"></i>
+            <h3 class="text-base font-bold text-slate-300">No Books Found</h3>
+            <p class="text-xs text-slate-500 mt-1">Click "Add New Book" to publish your first work.</p>
           </div>
         </div>
-      </div>
     </section>
 
 
@@ -767,24 +744,24 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
       <div class="bg-slate-800/90 border border-slate-700/80 rounded-2xl p-6 shadow-xl">
         <div id="book-detail-header" class="flex flex-col md:flex-row gap-6">
         <div class="w-32 h-44 rounded-xl overflow-hidden shadow-lg bg-slate-950 shrink-0 mx-auto md:mx-0">
-          <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&amp;fit=crop&amp;w=600&amp;q=80" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/400x600/1e293b/38bdf8?text=Book+Cover'">
+          <img src="https://images.unsplash.com/photo-1508739773434-c26b3d09e071?auto=format&amp;fit=crop&amp;w=600&amp;q=80" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/400x600/1e293b/38bdf8?text=Book+Cover'">
         </div>
         <div class="flex-1 space-y-2 text-center md:text-left">
           <span class="text-[10px] font-bold uppercase tracking-wider text-brand-400 bg-brand-500/10 border border-brand-500/20 px-2.5 py-0.5 rounded-full inline-block">
-            Fantasy / Adventure
+            Cyberpunk Sci-Fi
           </span>
-          <h1 class="text-2xl font-extrabold text-white">Chronicles of Aetheria</h1>
+          <h1 class="text-2xl font-extrabold text-white">Neon Horizon 2099</h1>
           <p class="text-xs text-slate-400">Written by <span class="text-slate-200 font-medium">Nihal</span></p>
-          <p class="text-xs text-slate-300 leading-relaxed max-w-2xl pt-1">An epic tale of magic, lost kingdoms, and celestial artifacts waiting to be uncovered by an unlikely squad of adventurers.</p>
+          <p class="text-xs text-slate-300 leading-relaxed max-w-2xl pt-1">In a rain-slicked metropolis ruled by megacorporations, a rogue netrunner uncovers an AI signal capable of overwriting reality itself.</p>
         </div>
       </div>
 
         <!-- Author Actions on Book -->
         <div id="book-detail-actions" class="mt-6 pt-4 border-t border-slate-700/60 flex flex-wrap items-center gap-3">
-          <button onclick="openPublishChapterModal('book-1')" class="px-4 py-2 bg-brand-600 hover:bg-brand-500 text-white font-semibold text-xs rounded-xl shadow transition-all flex items-center gap-1.5">
+          <button onclick="openPublishChapterModal('book-2')" class="px-4 py-2 bg-brand-600 hover:bg-brand-500 text-white font-semibold text-xs rounded-xl shadow transition-all flex items-center gap-1.5">
             <i class="fa-solid fa-file-circle-plus"></i> Publish New Chapter
           </button>
-          <button onclick="confirmDeleteBook('book-1')" class="px-3.5 py-2 bg-red-950/40 hover:bg-red-900/60 text-red-400 border border-red-900/50 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5 ml-auto">
+          <button onclick="confirmDeleteBook('book-2')" class="px-3.5 py-2 bg-red-950/40 hover:bg-red-900/60 text-red-400 border border-red-900/50 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5 ml-auto">
             <i class="fa-solid fa-trash-can"></i> Delete Book
           </button>
         </div>
@@ -795,7 +772,7 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
         <div class="flex items-center justify-between">
           <h3 class="text-lg font-bold text-white flex items-center gap-2">
             <span>Published Chapters</span>
-            <span id="chapter-count-badge" class="text-xs bg-slate-800 text-slate-300 font-semibold px-2 py-0.5 rounded-full border border-slate-700">2</span>
+            <span id="chapter-count-badge" class="text-xs bg-slate-800 text-slate-300 font-semibold px-2 py-0.5 rounded-full border border-slate-700">1</span>
           </h3>
         </div>
 
@@ -806,40 +783,17 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
               1
             </div>
             <div>
-              <h4 class="text-sm font-bold text-white hover:text-brand-400 cursor-pointer" onclick="navigateTo('chapter-reader', 'book-1', 'chap-1-1')">The Whispering Ruins</h4>
-              <p class="text-[10px] text-slate-400 mt-0.5">Published 2026-10-15</p>
+              <h4 class="text-sm font-bold text-white hover:text-brand-400 cursor-pointer" onclick="navigateTo('chapter-reader', 'book-2', 'chap-2-1')">Protocol Zero</h4>
+              <p class="text-[10px] text-slate-400 mt-0.5">Published 2026-10-28</p>
             </div>
           </div>
 
           <div class="flex items-center gap-2">
-            <button onclick="navigateTo('chapter-reader', 'book-1', 'chap-1-1')" class="px-3 py-1.5 bg-slate-700 hover:bg-brand-600 text-white rounded-lg text-xs font-semibold transition-all">
+            <button onclick="navigateTo('chapter-reader', 'book-2', 'chap-2-1')" class="px-3 py-1.5 bg-slate-700 hover:bg-brand-600 text-white rounded-lg text-xs font-semibold transition-all">
               Read
             </button>
             
-              <button onclick="confirmDeleteChapter('book-1', 'chap-1-1')" class="p-1.5 text-slate-400 hover:text-red-400 transition-colors" title="Delete Chapter">
-                <i class="fa-solid fa-trash-can text-xs"></i>
-              </button>
-            
-          </div>
-        </div>
-      
-        <div class="bg-slate-800/80 border border-slate-700/80 hover:border-slate-600 rounded-xl p-4 flex items-center justify-between transition-all gap-4">
-          <div class="flex items-center gap-3">
-            <div class="w-8 h-8 rounded-lg bg-slate-900 border border-slate-700 flex items-center justify-center font-bold text-xs text-brand-400">
-              2
-            </div>
-            <div>
-              <h4 class="text-sm font-bold text-white hover:text-brand-400 cursor-pointer" onclick="navigateTo('chapter-reader', 'book-1', 'chap-1-2')">Shadows in the Mist</h4>
-              <p class="text-[10px] text-slate-400 mt-0.5">Published 2026-10-20</p>
-            </div>
-          </div>
-
-          <div class="flex items-center gap-2">
-            <button onclick="navigateTo('chapter-reader', 'book-1', 'chap-1-2')" class="px-3 py-1.5 bg-slate-700 hover:bg-brand-600 text-white rounded-lg text-xs font-semibold transition-all">
-              Read
-            </button>
-            
-              <button onclick="confirmDeleteChapter('book-1', 'chap-1-2')" class="p-1.5 text-slate-400 hover:text-red-400 transition-colors" title="Delete Chapter">
+              <button onclick="confirmDeleteChapter('book-2', 'chap-2-1')" class="p-1.5 text-slate-400 hover:text-red-400 transition-colors" title="Delete Chapter">
                 <i class="fa-solid fa-trash-can text-xs"></i>
               </button>
             
@@ -948,14 +902,14 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
         </button>
       </div>
 
-      <div id="modal-body" class="py-4 space-y-4"><p class="text-xs text-slate-300">Are you sure you want to delete <strong>"Chronicles of Aetheria"</strong> and all its published chapters? This cannot be undone.</p></div>
+      <div id="modal-body" class="py-4 space-y-4"><p class="text-xs text-slate-300">Are you sure you want to delete <strong>"Neon Horizon 2099"</strong> and all its published chapters? This cannot be undone.</p></div>
 
       <div id="modal-footer" class="pt-4 border-t border-slate-700/80 flex items-center justify-end gap-3">
         <button onclick="closeModal()" class="px-4 py-2 text-xs font-semibold text-slate-400 hover:text-white">
           Cancel
         </button>
       
-        <button onclick="submitDeleteBook('book-1')" class="px-4 py-2 text-xs font-semibold bg-red-600 hover:bg-red-500 text-white rounded-xl shadow">
+        <button onclick="submitDeleteBook('book-2')" class="px-4 py-2 text-xs font-semibold bg-red-600 hover:bg-red-500 text-white rounded-xl shadow">
           Delete Book
         </button>
       </div>
@@ -964,7 +918,7 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
 
 
   <!-- TOAST CONTAINER -->
-  <div id="toast-container" class="fixed bottom-5 right-5 z-50 space-y-2 pointer-events-none"><div class="px-4 py-2.5 rounded-xl text-xs font-semibold shadow-2xl flex items-center gap-2 transform transition-all duration-300 translate-y-2 opacity-0 bg-slate-800 text-slate-100 border border-slate-700"><span>Book deleted.</span></div></div>
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 space-y-2 pointer-events-none"><div class="px-4 py-2.5 rounded-xl text-xs font-semibold shadow-2xl flex items-center gap-2 transform transition-all duration-300 bg-emerald-600 text-white"><span>Committed directly to GitHub!</span></div><div class="px-4 py-2.5 rounded-xl text-xs font-semibold shadow-2xl flex items-center gap-2 transform transition-all duration-300 translate-y-2 opacity-0 bg-slate-800 text-slate-100 border border-slate-700"><span>Book deleted.</span></div></div>
 
 
   <!-- JAVASCRIPT APPLICATION CODE -->
@@ -982,24 +936,7 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
     };
 
     // Initial Default Seed Data if Storage Empty
-    const INITIAL_BOOKS = [
-  {
-    "id": "book-2",
-    "title": "Neon Horizon 2099",
-    "author": "Nihal",
-    "genre": "Cyberpunk Sci-Fi",
-    "description": "In a rain-slicked metropolis ruled by megacorporations, a rogue netrunner uncovers an AI signal capable of overwriting reality itself.",
-    "coverUrl": "https://images.unsplash.com/photo-1508739773434-c26b3d09e071?auto=format&fit=crop&w=600&q=80",
-    "chapters": [
-      {
-        "id": "chap-2-1",
-        "title": "Protocol Zero",
-        "content": "Rain spilled off the edge of the holographic billboard, illuminated in flickering neon magenta. Dax adjusted his neural interface, connecting to the city grid through an encrypted relay.\n\n\"Data stream inbound,\" his AI companion whispered through his earpiece.\n\nHe watched lines of raw code flood his visor. Deep within the encrypted headers lay an anomaly—a self-replicating sequence with no origin timestamp. It wasn't standard corporate traffic. It was something alive.",
-        "createdAt": "2026-10-28"
-      }
-    ]
-  }
-];
+    const INITIAL_BOOKS = [];
 
     // Seed Readers Demo List (100 accounts: Reader1/001 to Reader100/100)
     const INITIAL_READERS = Array.from({ length: 100 }).map((_, i) => {
